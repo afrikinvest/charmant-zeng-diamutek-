@@ -2,194 +2,169 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TECK CO. | PORTAIL PRIVÉ</title>
-    <link href="https://cloudflare.com" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statut du Compte - Investissement Sécurisé</title>
     <style>
-        :root { --gold: #f0b90b; --dark: #080a0c; --card: #161a1e; --success: #0ecb81; --gray: #848e9c; }
-        body { margin: 0; font-family: 'Inter', -apple-system, sans-serif; background: var(--dark); color: white; -webkit-tap-highlight-color: transparent; }
-
-        /* NOTIFICATIONS LIVE */
-        #notif-box {
-            position: fixed; top: 15px; left: 5%; width: 90%; background: white; color: black; 
-            padding: 15px; border-radius: 12px; font-size: 0.85rem; display: none;
-            align-items: center; gap: 12px; z-index: 10000; box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            animation: slideDown 0.4s ease-out;
+        :root {
+            --bg-dark: #0a0e17;
+            --airtel-red: #ff0000;
+            --success-green: #00ff88;
+            --card-bg: #161d2f;
+            --text-main: #ffffff;
+            --accent-gold: #ffcc00;
+            --warning-orange: #ff8800;
         }
 
-        /* LOGIN */
-        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .glass-card { background: var(--card); padding: 40px 25px; border-radius: 35px; width: 100%; max-width: 360px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
-        .input-gold { width: 100%; background: #000; border: 1.5px solid #333; padding: 18px; border-radius: 15px; color: var(--gold); font-size: 1.6rem; text-align: center; letter-spacing: 6px; margin: 25px 0; outline: none; box-sizing: border-box; }
-
-        /* DASHBOARD */
-        #dashboard { display: none; }
-        .top-bar { background: var(--card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(240,185,11,0.2); }
-        .live-dot { height: 10px; width: 10px; background: var(--success); border-radius: 50%; display: inline-block; margin-right: 5px; animation: blink 1s infinite; }
-
-        .container { padding: 20px; padding-bottom: 100px; }
-        .main-card { background: linear-gradient(145deg, #1e2329, #080a0c); padding: 25px; border-radius: 30px; border: 1px solid rgba(240,185,11,0.3); position: relative; }
-        
-        .timer-strip { background: rgba(240,185,11,0.1); border: 1px solid var(--gold); color: var(--gold); padding: 8px; border-radius: 10px; font-size: 0.75rem; font-weight: bold; margin-bottom: 20px; text-align: center; }
-
-        .info-box { background: rgba(0,0,0,0.4); padding: 18px; border-radius: 20px; margin: 20px 0; font-size: 0.85rem; border-left: 3px solid var(--gold); }
-        .info-line { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .info-line span:first-child { color: var(--gray); }
-
-        .profit-zone { text-align: center; margin: 25px 0; }
-        .profit-val { font-size: 2.2rem; font-weight: 900; color: var(--success); display: block; }
-
-        .btn-action {
-            display: flex; align-items: center; justify-content: center; gap: 12px;
-            background: var(--gold); color: black; text-decoration: none;
-            padding: 22px; border-radius: 20px; font-weight: 900; font-size: 1.1rem;
-            animation: pulse 2s infinite; text-transform: uppercase;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        /* INVESTISSEURS */
-        #investors-list { display: none; animation: fadeIn 0.5s; }
-        .inv-card { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; border: 1px solid rgba(255,255,255,0.05); }
+        .dashboard {
+            width: 95%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 30px;
+            border: 2px solid var(--accent-gold);
+            box-shadow: 0 0 30px rgba(255, 204, 0, 0.15);
+            text-align: center;
+        }
 
-        /* NAVBAR */
-        .navbar { position: fixed; bottom: 0; width: 100%; background: #12161c; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #2a2e33; z-index: 999; }
-        .nav-link { color: var(--gray); text-decoration: none; font-size: 0.7rem; text-align: center; }
-        .nav-link.active { color: var(--gold); }
-        .nav-link i { display: block; font-size: 1.3rem; margin-bottom: 4px; }
+        .status-badge {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--success-green);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border: 1px solid var(--success-green);
+        }
 
-        /* ANIMATIONS */
-        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .main-balance {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--success-green);
+        }
+
+        .amount-display {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--text-main);
+            display: block;
+        }
+
+        .alert-box {
+            background: rgba(255, 136, 0, 0.1);
+            border: 1px solid var(--warning-orange);
+            color: var(--warning-orange);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .info-grid {
+            text-align: left;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+
+        .grid-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .label { color: #8b9bb4; }
+        .value { font-weight: bold; }
+
+        .wait-container {
+            background: #1e263a;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #000;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 65%;
+            height: 100%;
+            background: var(--accent-gold);
+            box-shadow: 0 0 10px var(--accent-gold);
+        }
+
+        .blink { animation: blinker 1.5s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
 
-    <div id="notif-box">
-        <i class="fas fa-check-circle" style="color:var(--success); font-size:1.4rem;"></i>
-        <span id="notif-txt"></span>
+<div class="dashboard">
+    <div class="status-badge">
+        ✓ FRAIS DE 456.00 $ REÇUS AVEC SUCCÈS
     </div>
 
-    <!-- ÉCRAN D'ACCÈS -->
-    <section id="login-screen">
-        <div class="glass-card">
-            <div style="background:var(--gold); width:70px; height:70px; border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center;">
-                <i class="fas fa-user-lock fa-2x" style="color:black;"></i>
-            </div>
-            <h2 style="margin:0; letter-spacing:1px;">TECK COMPANY</h2>
-            <p style="color:var(--gray); font-size:0.85rem; margin-top:5px;">Compte : <strong>CHARMANT ZENG DIAMUTEK</strong></p>
-            <input type="password" id="passInput" class="input-gold" placeholder="••••••" maxlength="6">
-            <button onclick="access()" style="width:100%; background:var(--gold); border:none; padding:20px; border-radius:15px; font-weight:900; cursor:pointer;">OUVRIR MA SESSION VIP</button>
+    <div class="main-balance">
+        <span style="font-size: 0.8rem; color: #8b9bb4; display: block; margin-bottom: 5px;">SOLDE EN ATTENTE DE LIBÉRATION</span>
+        <span class="amount-display">4 106.00 $</span>
+    </div>
+
+    <div class="alert-box">
+        <strong style="display: block; margin-bottom: 10px; font-size: 1.1rem;">⚠️ SYSTÈME DE PRÊT ET INTÉRÊTS</strong>
+        Le compte est actuellement sous protocole de "Prêt Collectif". Le profit généré est partagé entre les investisseurs ayant contracté le prêt.
+    </div>
+
+    <div class="info-grid">
+        <div class="grid-row">
+            <span class="label">Statut des participants :</span>
+            <span class="value">2/3 Validés</span>
         </div>
-    </section>
-
-    <!-- DASHBOARD -->
-    <section id="dashboard">
-        <div class="top-bar">
-            <div style="font-weight:900; font-size:1.1rem; color:var(--gold);">TECK TRADING</div>
-            <div style="font-size:0.8rem;"><span class="live-dot"></span> SERVEUR RDC ACTIVE</div>
+        <div class="grid-row">
+            <span class="label">Part Client (Jean Paul) :</span>
+            <span class="value" style="color: var(--success-green);">INCLUS / PRÊT À ENVOYER</span>
         </div>
-
-        <div id="home-view" class="container">
-            <div class="timer-strip">
-                <i class="fas fa-clock"></i> CYCLE DE TRADING : RETRAIT DISPONIBLE DANS 24H
-            </div>
-
-            <div class="main-card">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                    <div>
-                        <span style="color:var(--gray); font-size:0.7rem; font-weight:bold;">ID TRANSACTION</span>
-                        <div style="font-weight:bold; font-size:1.1rem;">TCO-43581</div>
-                    </div>
-                    <img src="https://wikimedia.org" width="35" style="border-radius:5px;">
-                </div>
-
-                <div class="info-box">
-                    <div class="info-line"><span>Client :</span> <strong>CHARMANT ZENG</strong></div>
-                    <div class="info-line"><span>Mode :</span> <strong>Orange Money</strong></div>
-                    <div class="info-line"><span>N° Source :</span> <strong>0840563933</strong></div>
-                    <div class="info-line"><span>N° Réception :</span> <strong>0840563933</strong></div>
-                </div>
-
-                <div class="profit-zone">
-                    <span style="color:var(--gray); font-size:0.8rem;">DÉPÔT REQUIS : 150 $</span>
-                    <span class="profit-val">+ 1 350.00 $</span>
-                    <span style="color:var(--success); font-size:0.75rem; font-weight:bold;">GAINS NETS APRÈS 24H</span>
-                </div>
-
-                <a href="#" onclick="contact()" class="btn-action">
-                    <i class="fab fa-whatsapp fa-lg"></i> ACTIVER MON GAIN
-                </a>
-            </div>
-
-            <div style="margin-top:25px; text-align:center; font-size:0.75rem; color:var(--gray);">
-                <p><i class="fas fa-shield-alt"></i> Vos fonds sont protégés par assurance Teck Co.</p>
-            </div>
+        <div class="grid-row">
+            <span class="label">Part Investisseur B :</span>
+            <span class="value" style="color: var(--warning-orange);">EN ATTENTE (MERCREDI)</span>
         </div>
+    </div>
 
-        <!-- VUE INVESTISSEURS -->
-        <div id="investors-view" class="container" style="display:none;">
-            <h3 style="text-align:center; margin-bottom:20px;">INVESTISSEURS ACTIFS (45+)</h3>
-            <div id="inv-grid"></div>
+    <div class="wait-container">
+        <p style="font-size: 0.9rem; line-height: 1.6; margin: 0;">
+            <strong>NOTE DE LA DIRECTION :</strong><br>
+            Le virement total ne peut être fractionné. Puisque le second investisseur doit remettre sa part d'intérêts ce <strong>mercredi</strong>, nous vous prions de patienter. 
+            <br><br>
+            <span class="blink" style="color: var(--accent-gold);">Dès validation mercredi, les 4 106 $ seront versés sans aucun frais supplémentaire.</span>
+        </p>
+        
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
         </div>
+        <span style="font-size: 0.75rem; color: #8b9bb4;">Progression de la libération : 65%</span>
+    </div>
 
-        <nav class="navbar">
-            <a href="#" class="nav-link active" id="n-home" onclick="tab('home')"><i class="fas fa-home"></i>Accueil</a>
-            <a href="#" class="nav-link" id="n-inv" onclick="tab('inv')"><i class="fas fa-users"></i>Membres</a>
-            <a href="#" class="nav-link" onclick="contact()"><i class="fas fa-headset"></i>Support</a>
-        </nav>
-    </section>
+    <p style="margin-top: 20px; font-size: 0.8rem; font-style: italic; color: #8b9bb4;">
+        Merci de votre confiance. Votre capital et vos profits sont en sécurité.
+    </p>
+</div>
 
-    <script>
-        const key = "O4GAAE";
-        const notifs = [
-            "Prince M. a retiré 1 850 $", 
-            "Sarah L. a reçu 2 400 $", 
-            "Jean-Luc T. a retiré 1 700 $", 
-            "Merveille K. a reçu 3 150 $", 
-            "Gradi B. a retiré 1 950 $"
-        ];
-
-        function access() {
-            if(document.getElementById('passInput').value === key) {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                startLive();
-                loadInv();
-            } else { alert("Clé d'accès invalide."); }
-        }
-
-        function startLive() {
-            let i = 0;
-            setInterval(() => {
-                const box = document.getElementById('notif-box');
-                document.getElementById('notif-txt').innerHTML = `<b>${notifs[i % notifs.length]}</b>`;
-                box.style.display = 'flex';
-                setTimeout(() => box.style.display = 'none', 4500);
-                i++;
-            }, 7000);
-        }
-
-        function loadInv() {
-            const grid = document.getElementById('inv-grid');
-            for(let j=0; j<45; j++) {
-                const amount = Math.floor(Math.random() * (4000 - 1700) + 1700);
-                grid.innerHTML += `<div class="inv-card"><span><i class="fas fa-user-circle" style="color:var(--gold);"></i> Membre VIP #43${j}</span> <strong style="color:var(--success);">+ ${amount} $</strong></div>`;
-            }
-        }
-
-        function tab(t) {
-            document.getElementById('home-view').style.display = t === 'home' ? 'block' : 'none';
-            document.getElementById('investors-view').style.display = t === 'inv' ? 'block' : 'none';
-            document.getElementById('n-home').classList.toggle('active', t === 'home');
-            document.getElementById('n-inv').classList.toggle('active', t === 'inv');
-        }
-
-        function contact() {
-            const num = "237689964053";
-            const txt = encodeURIComponent("Bonjour Service Client, l'identifiant TCO-43581 appartenant à CHARMANT ZENG souhaiterait recharger la somme de 150 $ que son compte réclame.");
-            window.location.href = `https://wa.me/237689964053?text=${txt}`;
-        }
-    </script>
 </body>
 </html>
