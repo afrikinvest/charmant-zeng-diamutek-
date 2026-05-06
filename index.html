@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statut du Compte - Investissement Sécurisé</title>
+    <title>Compte Investisseur Sécurisé - Airtel Money</title>
     <style>
         :root {
             --bg-dark: #0a0e17;
@@ -12,7 +12,6 @@
             --card-bg: #161d2f;
             --text-main: #ffffff;
             --accent-gold: #ffcc00;
-            --warning-orange: #ff8800;
         }
 
         body {
@@ -26,145 +25,195 @@
             min-height: 100vh;
         }
 
-        .dashboard {
-            width: 95%;
-            max-width: 500px;
+        /* Écran de verrouillage */
+        #lock-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-card {
             background: var(--card-bg);
+            padding: 40px;
             border-radius: 25px;
+            border: 2px solid var(--airtel-red);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        input {
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #333;
+            margin: 20px 0;
+            width: 80%;
+            font-size: 1.2rem;
+            text-align: center;
+            background: #000;
+            color: white;
+        }
+
+        /* Dashboard */
+        #main-content { display: none; width: 95%; max-width: 500px; padding: 20px 0; }
+
+        .dashboard {
+            background: var(--card-bg);
+            border-radius: 30px;
             padding: 30px;
-            border: 2px solid var(--accent-gold);
-            box-shadow: 0 0 30px rgba(255, 204, 0, 0.15);
+            border: 2px solid var(--success-green);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.15);
             text-align: center;
         }
 
-        .status-badge {
-            background: rgba(0, 255, 136, 0.15);
-            color: var(--success-green);
-            padding: 10px 20px;
-            border-radius: 50px;
-            display: inline-block;
-            font-weight: bold;
-            margin-bottom: 20px;
-            border: 1px solid var(--success-green);
-        }
-
-        .main-balance {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 25px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            border-left: 5px solid var(--success-green);
-        }
-
-        .amount-display {
-            font-size: 2.8rem;
+        .amount-big {
+            font-size: 3.8rem;
             font-weight: 900;
-            color: var(--text-main);
+            color: var(--success-green);
             display: block;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            margin: 10px 0;
         }
 
-        .alert-box {
-            background: rgba(255, 136, 0, 0.1);
-            border: 1px solid var(--warning-orange);
-            color: var(--warning-orange);
+        .details-container {
+            text-align: left;
+            background: rgba(0,0,0,0.3);
             padding: 20px;
-            border-radius: 15px;
-            text-align: left;
-            margin-bottom: 25px;
+            border-radius: 20px;
+            margin: 20px 0;
         }
 
-        .info-grid {
-            text-align: left;
-            margin-bottom: 25px;
-            font-size: 0.9rem;
-        }
-
-        .grid-row {
+        .row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
+            padding: 12px 0;
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.95rem;
         }
 
         .label { color: #8b9bb4; }
         .value { font-weight: bold; }
 
-        .wait-container {
-            background: #1e263a;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
+        .fee-box {
+            background: var(--airtel-red);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 25px 0;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
         }
 
-        .progress-bar {
-            height: 10px;
-            background: #000;
-            border-radius: 10px;
-            margin: 15px 0;
-            overflow: hidden;
+        .btn-withdraw {
+            width: 100%;
+            background: var(--success-green);
+            color: #000;
+            border: none;
+            padding: 22px;
+            border-radius: 18px;
+            font-size: 1.3rem;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
         }
 
-        .progress-fill {
-            width: 65%;
-            height: 100%;
-            background: var(--accent-gold);
-            box-shadow: 0 0 10px var(--accent-gold);
-        }
+        .btn-withdraw:hover { transform: scale(1.02); background: #00db77; }
 
         .blink { animation: blinker 1.5s linear infinite; }
-        @keyframes blinker { 50% { opacity: 0.5; } }
+        @keyframes blinker { 50% { opacity: 0.4; } }
     </style>
 </head>
 <body>
 
-<div class="dashboard">
-    <div class="status-badge">
-        ✓ FRAIS DE 456.00 $ REÇUS AVEC SUCCÈS
+<!-- VERROUILLAGE -->
+<div id="lock-screen">
+    <div class="login-card">
+        <div style="font-size: 1.5rem; font-weight: 900; color: var(--airtel-red); margin-bottom: 10px;">AIRTEL SECURITY</div>
+        <p>Entrez votre mot de passe pour débloquer l'accès à vos gains :</p>
+        <input type="password" id="passCode" placeholder="••••••">
+        <br>
+        <button onclick="unlock()" style="background: var(--airtel-red); color: white; border:none; padding: 15px 40px; border-radius: 10px; font-weight: bold; cursor: pointer;">DÉVERROUILLER</button>
+        <p id="errMsg" style="color: #ff4444; margin-top: 15px; display: none; font-size: 0.9rem;">Code d'accès invalide. Réessayez.</p>
     </div>
-
-    <div class="main-balance">
-        <span style="font-size: 0.8rem; color: #8b9bb4; display: block; margin-bottom: 5px;">SOLDE EN ATTENTE DE LIBÉRATION</span>
-        <span class="amount-display">4 106.00 $</span>
-    </div>
-
-    <div class="alert-box">
-        <strong style="display: block; margin-bottom: 10px; font-size: 1.1rem;">⚠️ SYSTÈME DE PRÊT ET INTÉRÊTS</strong>
-        Le compte est actuellement sous protocole de "Prêt Collectif". Le profit généré est partagé entre les investisseurs ayant contracté le prêt.
-    </div>
-
-    <div class="info-grid">
-        <div class="grid-row">
-            <span class="label">Statut des participants :</span>
-            <span class="value">2/3 Validés</span>
-        </div>
-        <div class="grid-row">
-            <span class="label">Part Client (Jean Paul) :</span>
-            <span class="value" style="color: var(--success-green);">INCLUS / PRÊT À ENVOYER</span>
-        </div>
-        <div class="grid-row">
-            <span class="label">Part Investisseur B :</span>
-            <span class="value" style="color: var(--warning-orange);">EN ATTENTE (MERCREDI)</span>
-        </div>
-    </div>
-
-    <div class="wait-container">
-        <p style="font-size: 0.9rem; line-height: 1.6; margin: 0;">
-            <strong>NOTE DE LA DIRECTION :</strong><br>
-            Le virement total ne peut être fractionné. Puisque le second investisseur doit remettre sa part d'intérêts ce <strong>mercredi</strong>, nous vous prions de patienter. 
-            <br><br>
-            <span class="blink" style="color: var(--accent-gold);">Dès validation mercredi, les 4 106 $ seront versés sans aucun frais supplémentaire.</span>
-        </p>
-        
-        <div class="progress-bar">
-            <div class="progress-fill"></div>
-        </div>
-        <span style="font-size: 0.75rem; color: #8b9bb4;">Progression de la libération : 65%</span>
-    </div>
-
-    <p style="margin-top: 20px; font-size: 0.8rem; font-style: italic; color: #8b9bb4;">
-        Merci de votre confiance. Votre capital et vos profits sont en sécurité.
-    </p>
 </div>
+
+<!-- CONTENU DU COMPTE -->
+<div id="main-content">
+    <div class="dashboard">
+        <div style="background: rgba(0,255,136,0.1); color: var(--success-green); padding: 10px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; letter-spacing: 1px;">
+            ✓ TOUS LES PRÊTEURS ONT VALIDÉ - FONDS PRÊTS
+        </div>
+
+        <span style="display: block; margin-top: 20px; color: #8b9bb4; font-size: 0.9rem;">MONTANT TOTAL DISPONIBLE (AIRTEL MONEY)</span>
+        <span class="amount-big">8 306.00 $</span>
+
+        <div class="details-container">
+            <div style="color: var(--accent-gold); font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid var(--accent-gold); padding-bottom: 5px;">DÉTAILS DU CALCUL FINAL</div>
+            <div class="row">
+                <span class="label">Bénéficiaire :</span>
+                <span class="value">Jean Paul Assani</span>
+            </div>
+            <div class="row">
+                <span class="label">Numéro de réception :</span>
+                <span class="value">0992023013</span>
+            </div>
+            <div class="row">
+                <span class="label">Ancien solde bloqué :</span>
+                <span class="value">4 106.00 $</span>
+            </div>
+            <div class="row">
+                <span class="label">Nouveaux intérêts (7 jours) :</span>
+                <span class="value" style="color: var(--success-green);">+ 4 200.00 $</span>
+            </div>
+            <div class="row">
+                <span class="label">Profit journalier :</span>
+                <span class="value">600.00 $ / jour</span>
+            </div>
+        </div>
+
+        <p style="font-size: 0.85rem; color: #8b9bb4; line-height: 1.5; text-align: left;">
+            Le dernier investisseur a finalisé son remboursement aujourd'hui. Vos intérêts ont couru pendant <strong>7 jours</strong> supplémentaires, portant votre gain total à <strong>8 306 $</strong>. Pour libérer cette somme immédiatement sur votre numéro Airtel, les frais finaux doivent être régularisés.
+        </p>
+
+        <div class="fee-box blink">
+            TOTAL DES FRAIS À PAYER : 621.00 $
+        </div>
+
+        <button class="btn-withdraw" onclick="contactAdanna()">
+            RECEVOIR MES 8 306.00 $ MAINTENANT
+        </button>
+
+        <div style="margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--accent-gold); font-size: 0.8rem;">
+            <div style="width: 10px; height: 10px; background: var(--accent-gold); border-radius: 50%; animation: pulse 1s infinite;"></div>
+            <span>En attente de validation des frais (Serveur Airtel)</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    function unlock() {
+        const p = document.getElementById('passCode').value;
+        if(p === "041990") {
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        } else {
+            document.getElementById('errMsg').style.display = 'block';
+        }
+    }
+
+    function contactAdanna() {
+        alert("ACTION REQUISE :\n\nPour valider vos frais de 621.00 $ et débloquer instantanément vos 8 306.00 $ sur votre compte Airtel Money, veuillez contacter Madame Adanna dès maintenant.");
+    }
+</script>
+
+<style>
+    @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+</style>
 
 </body>
 </html>
